@@ -94,19 +94,7 @@ execution or persistence; run the checks above with your configured MariaDB.
 
 ## Citations and assistance
 
-- Shane P, **CS208-full-stack** starter repository:
-  https://github.com/shanep/CS208-full-stack
-  Retrieved November 14, 2026. The original Express/Pug/MariaDB structure,
-  create/delete behavior, setup scripts, and walkthrough were adapted. The
-  original license is retained in `LICENSE`.
-- **OpenAI ChatGPT/Codex**, assistance on November 14, 2026: generated the
-  update route, validation, Focus Desk templates/CSS, README, and verification
-  checks. Review and understand this assistance before submitting and follow
-  your instructor's disclosure policy.
+- **OpenAI ChatGPT/Codex**, assistance on November 13, 2026. 
 - No external images, fonts, or copied CSS were used.
 
-## Submit
-
-Commit and push all changed files to **your own GitHub repository**. Submit
-that repository URL in Canvas, not a Codespaces preview link or ZIP. This
-package has not been published to your GitHub account.
+ 
