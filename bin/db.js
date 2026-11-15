@@ -7,8 +7,8 @@ function createDbConnection() {
     if (!connection) {
         connection = mysql.createConnection({
             host: 'localhost',
-            user: 'root',
-            password: '12345',
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
             database: 'cs208demo'
         });
 

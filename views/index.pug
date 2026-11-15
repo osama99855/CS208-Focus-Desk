@@ -1,23 +1,65 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  ol
-  each val in todos
-    li
-      span= val.task + ' - '
-      if val.completed > 0
+  - const completedCount = todos.filter(todo => todo.completed > 0).length
+  main.desk
+    header.topbar
+      a.brand(href='/')
+        span.brand-icon(aria-hidden='true') ✓
+        span FOCUS DESK
+      span.course CS 208 / FULL STACK
+    section.hero
+      p.eyebrow A LITTLE STRUCTURE. A LOT OF POSSIBILITY.
+      h1 Make room for<br>what matters.
+      p.intro Your ideas, assignments, and next small steps. All in one place.
+    section.dashboard(aria-label='Task overview')
+      div
+        strong= todos.length - completedCount
+        span To do
+      div
+        strong= completedCount
         span Completed
+      div
+        strong= todos.length
+        span Total tasks
+    if error
+      p.error(role='alert')= error
+    section.composer(aria-labelledby='new-task-heading')
+      h2#new-task-heading What's your next step?
+      form.add-form(method='POST' action='/create')
+        label.sr-only(for='task') New task description
+        input#task(type='text' name='task' placeholder='e.g. Finish my CS 208 lab' required maxlength='255' value=editId ? '' : draft)
+        button.primary(type='submit') Add task +
+      p.hint Small steps count. Start with just one.
+    section.tasks(aria-labelledby='tasks-heading')
+      .section-heading
+        h2#tasks-heading Your task board
+        span= todos.length + (todos.length === 1 ? ' task' : ' tasks')
+      if todos.length === 0
+        .empty
+          span.empty-icon(aria-hidden='true') ✦
+          h3 A fresh start.
+          p Add your first task above and give your day a little direction.
       else
-        span Not Completed
-      form(method='POST' action='/delete')
-        input(type='hidden', name='id', value=val.id)
-        button(type='submit') Delete
-
-  hr
-  h2 Add a new task
-  form(method='POST' action='/create')
-    label(for='task') Task:
-    input(type='text', name='task', id='task', required)
-    button(type='submit') Create Task
+        ul.task-list
+          each todo in todos
+            li.task-card(class=todo.completed > 0 ? 'is-complete' : '')
+              .task-top
+                span.status(class=todo.completed > 0 ? 'done' : 'pending')= todo.completed > 0 ? 'Completed' : 'Not Completed'
+                form(method='POST' action='/delete')
+                  input(type='hidden' name='id' value=todo.id)
+                  button.delete(type='submit' aria-label='Delete task: ' + todo.task) Delete
+              h3.task-description= todo.task
+              details(open=String(todo.id) === editId)
+                summary Edit task
+                form.edit-form(method='POST' action='/update')
+                  input(type='hidden' name='id' value=todo.id)
+                  label(for='task-' + todo.id) Task description
+                  input(type='text' name='task' id='task-' + todo.id value=String(todo.id) === editId ? draft : todo.task required maxlength='255')
+                  label.checkbox-label
+                    input(type='checkbox' name='completed' value='1' checked=todo.completed > 0)
+                    span Completed
+                  button.primary(type='submit') Save changes
+    footer
+      span One task at a time.
+      span Built with Express · Pug · MariaDB
